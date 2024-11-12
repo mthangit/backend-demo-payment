@@ -8,7 +8,7 @@ CANCEL_URL = os.getenv('CANCEL_URL')
 
 stripe.api_key = SECRET_KEY
 
-def create_checkout_session(product_id):
+def create_checkout_session(product_id, description):
     try:
         session = stripe.checkout.Session.create(
             # payment_method_types=['card', 'wallets'],
@@ -17,6 +17,7 @@ def create_checkout_session(product_id):
                 'quantity': 1,
             }],
             mode='payment',
+            metadata={'description': description},
             success_url=RETURN_URL,
             cancel_url=CANCEL_URL,
         )
@@ -39,6 +40,6 @@ def retrieve_payment(session_id):
 		'timestampt': data['created'],
 		'payment_method_type': data['payment_method_types'][0] + ' - Stripe',
 		'amount': data['amount_total'],
-        'description': 'Thanh toan thanh cong',
+        'description': data['metadata']['description'],
         'method': 'stripe' 
 	})

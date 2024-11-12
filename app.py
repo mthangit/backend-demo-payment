@@ -35,7 +35,7 @@ def payment():
             case "momo":
                 return create_momo_payment_url(amount, description)
             case "stripe":
-                return create_checkout_session(product_id)
+                return create_checkout_session(product_id, description)
     
     except Exception as e:
         print(str(e))
